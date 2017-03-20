@@ -1,28 +1,10 @@
-"设置<leader>前缀键
-let mapleader=";"
-"""侦测文件类型"""
-filetype on
-"""为特定文件类型载入相关缩进文件"""
-filetype plugin indent on    
-"""载入文件类型插件"""
-filetype plugin on
-"让配置变更立即生效
-autocmd BufWritePost $MYVIMRC source $MYVIMRC
-set nocompatible              
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-call vundle#begin('~/some/path/here')
-Plugin 'gmarik/Vundle.vim'
-call vundle#end()          
-set splitbelow
-set splitright
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+set rtp+=~/.vim/bundle/vundle/    
+call vundle#rc()    
+" let Vundle manage Vundle    
+" required!     
+Bundle 'gmarik/vundle'    
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
@@ -71,60 +53,46 @@ Plugin 'python-mode/python-mode'
 Plugin 'bling/vim-airline'
 Plugin 'Yggdroot/indentLine'
 Plugin 'vim-airline/vim-airline-themes'
-call vundle#end()
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 filetype plugin indent on
-"设置主题
-"vim-solarized settion
+"设置<leader>前缀键
+let mapleader=";"
+"""侦测文件类型"""
+filetype on
+"""为特定文件类型载入相关缩进文件"""
+filetype plugin indent on    
+"""载入文件类型插件"""
+filetype plugin on
+"让配置变更立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+set splitbelow
+set splitright
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 "开启语法高亮功能
 syntax enable
 "允许用指定语法高亮配色方案替换默认方案
 syntax on
-"set background=murphy
-"colorscheme solarized
-set background=dark
-"colorscheme solarized
-"let g:colors_name='solarized'
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
-"let g:solarized_contrast='high'
-"let g:solarized_visibility='high'
 colorscheme molokai
-"设置状态栏主题风格
-"let g:Powerline_colorscheme='solarized256'
+"set background=dark
+"colorscheme solarized
 "禁止光标闪烁
 set gcr=a:block-blinkon0
 "自适应不同语言的智能缩进
 filetype indent on
 "vim-shell模式
 set clipboard=unnamed
-"let g:ycm_autoclose_preview_window_after_completion=1
-"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"标识多余空格"
-"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match Error /\s\+$/
 let g:SimpylFold_docstring_preview = 1
-"""启动时不显示那个援助索马里儿童的提示"""
-set shortmess=atI
-"""设置窗口位置"""
-winpos 5 5
-"""设置窗口大小"""
-set lines=40 columns=155
 """显示行号"""
 set nu
 """不要图形按钮"""
-set go=  
-"""设置背景主题"""
-"if has('gui_running')
-"    set background=dark
-"    colorscheme solarized
-"else
-"    colorscheme murphy
-"endif
+set go=
 """高亮光标所在行"""
 set cul
 set cuc
-"""设置字体"""
-"set guifont=Courier_New:h10:cANSI
 """语法高亮"""
 let python_highlight_all=1
 """用浅色高亮当前行"""
@@ -137,13 +105,10 @@ set ruler
 set nowrap
 """输入的命令显示出来"""
 set showcmd
-"""命令行（在状态行下)的高度"""
 """光标移动到buffer的顶部和底部时保持3行距离"""
 set scrolloff=3
 """不要闪烁"""
 set novisualbell
-"""状态行显示的内容"""
-"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
 """启动显示状态行（1），总是显示状态行（2）"""
 set laststatus=2
 """允许折叠"""
@@ -226,8 +191,8 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
 func! SetTitle() 
     """如果文件类型为.sh文件""" 
     if &filetype == 'python'
-        call setline(1, "#!/usr/bin/python3")
-        call append(line("."), "#_*_coding: utf-8_*_")
+        call setline(1, "# !/usr/bin/python3")
+        call append(line("."), "# _*_coding: utf-8_*_")
     else
         if &filetype == 'sh' 
             call setline(1,"\#########################################################################") 
@@ -272,7 +237,7 @@ func! LastModified()
                 \strftime("%Y-%m-%d %H:%M:%S" ) . "/e"  
 endfunc  
 """markdown配置"""
-au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd
+"au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd
 au BufRead,BufNewFile *.{go}   set filetype=go
 au BufRead,BufNewFile *.{js}   set filetype=javascript
 """rkdown to HTML"""
@@ -326,35 +291,35 @@ map <C-F3> \be
 :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
 """C,C++,python按F5编译运行"""
 "map <F10> :call CompileRun()<CR>
-"nmap <Leader>m :w<CR><CR>:call CompileRun()<CR>
-"func! CompileRun()
-    "exec "w"
-    "exec "!clear"
-    "exec "!echo =======================Compile start============================="
-    "if &filetype == 'c'
-        "exec "!g++ % -o %<"
-        "exec "!time ./%<"
-    "elseif &filetype == 'cpp'
-        "exec "!g++ % -o %<"
-        "exec "!time ./%<"
-    "elseif &filetype == 'java'
-        "exec "!javac %"
-        "exec "!time java %<"
-    "elseif &filetype == 'sh'
-        ":!time bash %
-    "elseif &filetype == 'python'
-        "exec "!time python3 %"
-    "elseif &filetype == 'html'
-        "exec "!firefox % &"
-    "elseif &filetype == 'go'
-        "exec "!go build %<"
-        "exec "!time go run %"
-    "elseif &filetype == 'mkd'
-        "exec "!~/.vim/markdown.pl % > %.html &"
-        "exec "!firefox %.html &"
-    "endif
-    "exec "!echo =======================Comoile end==============================="
-"endfunc
+nmap <Leader>m :w<CR>:call CompileRun()<CR>
+func! CompileRun()
+    exec "w"
+    exec "!clear"
+    exec "!echo '=======================Compile start============================='"
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'java'
+        exec "!javac %"
+        exec "!time java %<"
+    elseif &filetype == 'sh'
+        :!time bash %
+    elseif &filetype == 'python'
+        exec "!time python %"
+    elseif &filetype == 'html'
+        exec "!firefox % &"
+    elseif &filetype == 'go'
+        exec "!go build %<"
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!firefox %.html &"
+    endif
+    exec "!echo '=======================Comoile end==============================='"
+endfunc
 """C,C++的调试"""
 "map <F8> :call Rungdb()<CR>
 "func! Rungdb()
@@ -498,9 +463,9 @@ let g:pymode_rope_complete_on_dot = 1
 let g:pymode_rope_goto_definition_bind = '<leader>g'
 let g:pymode_rope_rename_bind = '<leader>rr'
 let g:pymode_rope_rename_module_bind = '<leader>r1r'
-let g:pymode_rope_project_root = "/home/ccl/Documents/doc/pro/pyanalysis/soccer"
-let g:pymode_virtualenv = 1
-let g:pymode_virtualenv_path = $VIRTUAL_ENV
+"let g:pymode_rope_project_root = "/home/ccl/Documents/doc/pro/pyanalysis/soccer"
+"let g:pymode_virtualenv = 1
+"let g:pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_python = 'python3'
 "let g:pymode_rope_organize_imports_bind = '<leader>ro'
 "let g:pymode_rope_autoimport_bind = '<leader>ra'
@@ -604,3 +569,29 @@ function! s:vimfilerinit()
     nmap <buffer> <Tab>  <Plug>(vimfiler_switch_to_other_window)
     nmap <buffer> <C-r>  <Plug>(vimfiler_redraw_screen)
 endf
+"mapping the Caps Lock to the Ctrl need install the xorg-xmodmap
+"au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+"##### auto fcitx  ###########
+let g:input_toggle = 1
+function! Fcitx2en()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx-remote -c")
+   endif
+endfunction
+
+function! Fcitx2zh()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+set ttimeoutlen=150
+"退出插入模式
+autocmd InsertLeave * call Fcitx2en()
+"进入插入模式
+autocmd InsertEnter * call Fcitx2zh()
+"##### auto fcitx end ######
