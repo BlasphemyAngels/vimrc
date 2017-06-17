@@ -55,9 +55,16 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+
+Plugin 'honza/vim-snippets'
 filetype plugin indent on
 "设置<leader>前缀键
 let mapleader=";"
+let localmapleader = "f"
 """侦测文件类型"""
 filetype on
 """为特定文件类型载入相关缩进文件"""
@@ -130,8 +137,8 @@ set guioptions-=R
 """设置魔术"""
 set magic
 """手动折叠"""
-"set foldmethod=indent
-set foldmethod=syntax
+set foldmethod=indent
+"set foldmethod=syntax
 set foldlevel=99
 "启动vim时关闭折叠代码
 set nofoldenable
@@ -216,8 +223,17 @@ func! SetTitle()
         endif
         if &filetype == 'cpp'
             call append(line(".")+6, "#include<iostream>")
-            call append(line(".")+7, "using namespace std;")
-            call append(line(".")+8, "")
+            call append(line(".")+7, "#include<cstdio>")
+            call append(line(".")+8, "#include<cstring>")
+            call append(line(".")+9, "#include<ctype.h>")
+            call append(line(".")+10, "#include<algorithm>")
+            call append(line(".")+11, "#include<climits>")
+            call append(line(".")+12, "using namespace std;")
+            call append(line(".")+13, "")
+            call append(line(".")+14, "int main(void){")
+            call append(line(".")+15, "    return 0;")
+            call append(line(".")+16, "}")
+            call append(line(".")+17, "")
         endif
         if &filetype == 'c'
             call append(line(".")+6, "#include<stdio.h>")
@@ -272,6 +288,8 @@ nnoremap <Leader>kw <C-W>k
 "跳转至下方的窗口
 nnoremap <Leader>jw <C-W>j
 "定义快捷键在结对符之间跳转
+nnoremap <leader>hw <C-W>s
+nnoremap <leader>vw <C-W>v
 nmap <Leader>M %
 """jshift tab pages""jw<C-W>j
 "定义快捷键在结对符之间跳转
@@ -282,7 +300,33 @@ nnoremap <F2> :g/^\s*$/d<CR>
 """比较文件"""
 nnoremap <C-F2> :vert diffsplit 
 nnoremap <Leader>fu :CtrlPFunky<Cr>
-nnoremap <C-n> :CtrlPFunky<Cr>
+"<leader>b显示缓冲区文件，并可通过序号进行跳转
+nmap <Leader>cb :CtrlPBuffer<CR>
+"默认使用全路径搜索，置1后按文件名搜索，准确率会有所提高，可以用<C-d>进行切换
+let g:ctrlp_by_filename = 1
+"自定义搜索列表的提示符
+let g:ctrlp_line_prefix = '♪'
+"默认不使用正则表达式，置1改为默认使用正则表达式，可以用<C-r>进行切换
+"let g:ctrlp_regexp = 0
+"<leader>p搜索当前目录下文件
+"let g:ctrlp_map = '<leader>p'
+"let g:ctrlp_cmd = 'CtrlP'
+"<leader>f搜索MRU（Most Recently Used）文件
+"nmap <leader>f :CtrlPMRUFiles<CR>
+"设置搜索时忽略的文件
+"let g:ctrlp_custom_ignore = {
+    "\ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+    "\ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    "\ }
+"let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_match_window_bottom = 1
+"修改QuickFix窗口显示的最大条目数
+"let g:ctrlp_max_height = 15
+"let g:ctrlp_match_window_reversed = 0
+"设置MRU最大条目数为500
+"let g:ctrlp_mruf_max = 500
+"let g:ctrlp_follow_symlinks = 1
+"nnoremap <C-n> :CtrlPFunky<Cr>
 """列出当前目录文件"""
 map <F3> :NERDTreeToggle<CR>
 imap <F3> <ESC> :NERDTreeToggle<CR>
@@ -595,3 +639,84 @@ autocmd InsertLeave * call Fcitx2en()
 "进入插入模式
 autocmd InsertEnter * call Fcitx2zh()
 "##### auto fcitx end ######
+
+:nnoremap & i&ensp;&ensp;&ensp;<Esc>
+
+
+"python debug
+python << EOF
+import time
+import vim
+def SetBreakpoint():
+    nLine = int( vim.eval( 'line(".")'))
+    strLine = vim.current.line
+    i = 0
+    strWhite = ""
+    while strLine[i] == ' ' or strLine[i] == "\t":
+        i += 1
+        strWhite += strLine[i]
+    vim.current.buffer.append(
+       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb":
+            break
+        else:
+            vim.current.buffer.append( 'import pdb', 4)
+            vim.command( 'normal j1')
+            break
+vim.command( 'map <leader>d :py SetBreakpoint()<cr>')  
+
+def RemoveBreakpoints():
+    nCurrentLine = int( vim.eval( 'line(".")'))
+    nLines = []
+    nLine = 1
+    for strLine in vim.current.buffer:
+        if strLine == 'import pdb' or strLine.lstrip()[:15] == 'pdb.set_trace()':
+            nLines.append( nLine)
+        nLine += 1
+    nLines.reverse()
+    for nLine in nLines:
+        vim.command( 'normal %dG' % nLine)
+        vim.command( 'normal dd')
+        if nLine < nCurrentLine:
+            nCurrentLine -= 1
+    vim.command( 'normal %dG' % nCurrentLine)
+vim.command( 'map <leader>c :py RemoveBreakpoints()<cr>')
+vim.command( 'map <leader>p :!python %<cr>')
+EOF
+
+"django
+let g:last_relative_dir = ''
+nnoremap <leader>1 :call RelatedFile ("models.py")<cr>
+nnoremap <leader>2 :call RelatedFile ("views.py")<cr>
+nnoremap <leader>3 :call RelatedFile ("urls.py")<cr>
+nnoremap <leader>4 :call RelatedFile ("admin.py")<cr>
+nnoremap <leader>5 :call RelatedFile ("tests.py")<cr>
+nnoremap <leader>6 :call RelatedFile ( "templates/" )<cr>
+nnoremap <leader>7 :call RelatedFile ( "templatetags/" )<cr>
+nnoremap <leader>8 :call RelatedFile ( "management/" )<cr>
+nnoremap <leader>0 :e settings.py<cr>
+nnoremap <leader>9 :e urls.py<cr>
+
+fun! RelatedFile(file)
+    if filereadable(expand("%:h"). '/models.py') || isdirectory(expand("%:h") . "/templatetags/")
+        exec "edit %:h/" . a:file
+        let g:last_relative_dir = expand("%:h") . '/'
+        return ''
+    endif
+    if g:last_relative_dir != ''
+        exec "edit " . g:last_relative_dir . a:file
+        return ''
+    endif
+    echo "Cant determine where relative file is : " . a:file
+    return ''
+endfun
+
+fun! SetAppDir()
+    if filereadable(expand("%:h"). '/models.py') || isdirectory(expand("%:h") . "/templatetags/")
+        let g:last_relative_dir = expand("%:h") . '/'
+        return ''
+    endif
+endfun
+autocmd BufEnter *.py call SetAppDir()
