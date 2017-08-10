@@ -1,0 +1,9 @@
+scriptencoding utf-8
+" This selects the next closest text object.
+map <SPACE> <Plug>(wildfire-fuel)
+
+" This selects the previous closest text object.
+vmap <C-SPACE> <Plug>(wildfire-water)
+
+"nmap <leader>s <Plug>(wildfire-quick-select)
+let g:wildfire_objects = ["i'", 'i"', "i)", "i]", "i}", "i<", "ip", "it"]
