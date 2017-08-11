@@ -1,21 +1,7 @@
 scriptencoding utf-8
-let g:vim_version = '0.4.0-dev'
-lockvar g:vim_version
-""
-" Change the default indentation of Vim. Default is 2.
-" >
-"   let g:vim_default_indent = 2
-" <
-let g:vim_default_indent          = 2
 ""
 " Enable/Disable relativenumber, by default it is enabled.
 let g:vim_relativenumber          = 1
-""
-" Change the max number of columns for Vim. Default is 120.
-" >
-"   let g:vim_max_column = 120
-" <
-let g:vim_max_column              = 120
 ""
 " Enable true color support in terminal. Default is 1.
 " >
@@ -316,12 +302,6 @@ let g:vim_smartcloseignorewin     = ['__Tagbar__' , 'vimfiler:default']
 let g:vim_smartcloseignoreft      = ['help', 'tagbar', 'vimfiler']
 let g:vim_altmoveignoreft         = ['Tagbar' , 'vimfiler']
 let g:vim_enable_javacomplete2_py = 0
-let g:vim_src_root                = 'E:\sources\'
-""
-" The host file url. This option is for Chinese users who can not use
-" Google and Twitter.
-let g:vim_hosts_url
-      \ = 'https://raw.githubusercontent.com/racaljk/hosts/master/hosts'
 let g:vim_wildignore
       \ = '*/tmp/*,*.so,*.swp,*.zip,*.class,tags,*.jpg,
       \*.ttf,*.TTF,*.png,*/target/*,

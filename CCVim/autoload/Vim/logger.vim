@@ -12,11 +12,11 @@ let s:log_temp = []
 "     2 : log warning and error messages
 "
 "     3 : log error messages only
-function! VimloggersetLevel(level) abort
+function! Vim#logger#setLevel(level) abort
   let s:logger_level = a:level
 endfunction
 
-function! Vimloggerinfo(msg) abort
+function! Vim#logger#info(msg) abort
   if g:vim_enable_debug && s:logger_level <= 1
     call s:wite(s:warpMsg(a:msg, 1))
   else
@@ -24,7 +24,7 @@ function! Vimloggerinfo(msg) abort
   endif
 endfunction
 
-function! Vimloggerwarn(msg) abort
+function! Vim#logger#warn(msg) abort
   let msg = s:warpMsg(a:msg, 2)
   echohl WarningMsg
   echomsg msg
@@ -36,7 +36,7 @@ function! Vimloggerwarn(msg) abort
   endif
 endfunction
 
-function! Vimloggererror(msg) abort
+function! Vim#logger#error(msg) abort
   if get(g:, 'vim_enable_debug', 1) && s:logger_level <= 3
     call s:wite(s:warpMsg(a:msg, 3))
   else
@@ -53,15 +53,15 @@ function! s:wite(msg) abort
 endfunction
 
 
-function! VimloggerviewLog(...) abort
+function! Vim#logger#viewLog(...) abort
   let info = "### Vim Options :\n\n"
   let info .= "```viml\n"
-  let info .= join(Vimoptionslist(), "\n")
+  let info .= join(Vim#options#list(), "\n")
   let info .= "\n```\n"
   let info .= "\n\n"
 
   let info .= "### Vim Health checking :\n\n"
-  let info .= Vimhealthreport()
+  let info .= Vim#health#report()
   let info .= "\n\n"
 
   let info .= "### Vim runtime log :\n\n"
@@ -103,7 +103,7 @@ endfunction
 ""
 " @public
 " Set the log output file of Vim. Default is `~/.Vim/.Vim.log`.
-function! VimloggersetOutput(file) abort
+function! Vim#logger#setOutput(file) abort
   let s:logger_file = a:file
 endfunction
 
@@ -113,7 +113,7 @@ function! s:warpMsg(msg,l) abort
   return log
 endfunction
 
-function! VimloggerechoWarn(msg) abort
+function! Vim#logger#echoWarn(msg) abort
   echohl WarningMsg
   echom s:warpMsg(a:msg, 1)
   echohl None

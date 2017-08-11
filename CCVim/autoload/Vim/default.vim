@@ -151,59 +151,56 @@ function! Vim#default#SetPlugins() abort
 endfunction
 
 function! Vim#default#SetMappings() abort
-  "设置<leader>前缀键
-  let leader=";"
-  """rkdown to HTML"""
-  "nmap md :!~/.vim/markdown.pl % > %.html <CR><CR>
-  "nmap fi :!firefox %.html & <CR><CR>
-  "nmap \ \cc
-  "vmap \ \cc
-  """将tab替换为空格"""
-  "nmap tt :%s/\t/    /g<CR>
-  """键盘命令"""
-  ":nmap <silent> <F9> <ESC>:Tlist<RETURN>
-  "将选中文本快复制到剪切板
-  vnoremap <Leader>y "+y
-  "将系统剪切版内容粘贴至vim
-  nmap <Leader>p "+p
-  "定义快捷键关闭当前分割窗口
-  nmap <Leader>q :q<CR>
-  "定义快捷键保存当前窗口内容
-  nmap <Leader>w :w<CR>
-  " 定义快捷键保存当前窗口并退出
-  nmap <Leader>WQ :wa<CR>:q<CR>
-  "不做任何保存直接退出vim
-  nmap <Leader>Q :qa!<CR>
-  "依次遍历子窗口
-  nnoremap <Leader>nw <C-W><C-W>
-  "跳转至右方的窗口
-  nnoremap <Leader>lw <C-W>l
-  "跳转至左方的窗口
-  nnoremap <Leader>hw <C-W>h
-  "跳转至上方的窗口
-  nnoremap <Leader>kw <C-W>k
-  "跳转至下方的窗口
-  nnoremap <Leader>jw <C-W>j
-  "定义快捷键在结对符之间跳转
-  nnoremap <leader>hw <C-W>s
-  nnoremap <leader>vw <C-W>v
-  nmap <Leader>M %
-  """jshift tab pages""jw<C-W>j
-  "定义快捷键在结对符之间跳转
-  nmap <Leader>M %"
-  """去空行"""
-  nnoremap <F2> :g/^\s*$/d<CR>
-  """比较文件"""
-  nnoremap <C-F2> :vert diffsplit 
+  "mapping
+  imap <silent><expr><TAB> Vim#mapping#tab#i_tab()
+  imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+  imap <silent><expr><S-TAB> Vim#mapping#shift_tab()
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+  imap <silent><expr><CR> Vim#mapping#enter#i_enter()
+  inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+  inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+  inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+  inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+  smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+  " Save a file with sudo
+  " http://forrst.com/posts/Use_w_to_sudo_write_a_file_with_Vim-uAN
+  cnoremap w!! %!sudo tee > /dev/null %
 
 
-  nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-  "nnoremap <leader>sr :source $MYVIMRC<cr>
-  nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-  nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-  nnoremap <leader>( viw<esc>a)<esc>hbi(<esc>lel
-  nnoremap <leader>< viw<esc>a><esc>hbi<<esc>lel
-  " vnoremap <leader>g" '<li"<Esc>'>a"<Esc>
+  " Use Ctrl+* to jump between windows
+  nnoremap <silent><C-Right> :<C-u>wincmd l<CR>
+  nnoremap <silent><C-Left>  :<C-u>wincmd h<CR>
+  nnoremap <silent><C-Up>    :<C-u>wincmd k<CR>
+  nnoremap <silent><C-Down>  :<C-u>wincmd j<CR>
+  if has('nvim')
+    exe 'tnoremap <silent><C-Right> <C-\><C-n>:<C-u>wincmd l<CR>'
+    exe 'tnoremap <silent><C-Left>  <C-\><C-n>:<C-u>wincmd h<CR>'
+    exe 'tnoremap <silent><C-Up>    <C-\><C-n>:<C-u>wincmd k<CR>'
+    exe 'tnoremap <silent><C-Down>  <C-\><C-n>:<C-u>wincmd j<CR>'
+    exe 'tnoremap <silent><M-Left>  <C-\><C-n>:<C-u>bprev<CR>'
+    exe 'tnoremap <silent><M-Right>  <C-\><C-n>:<C-u>bnext<CR>'
+    exe 'tnoremap <silent><esc>     <C-\><C-n>'
+  endif
+
+
+  "Use jk switch to normal mode
+  inoremap jk <esc>
+
+  "]<End> or ]<Home> move current line to the end or the begin of current buffer
+  nnoremap <silent>]<End> ddGp``
+  nnoremap <silent>]<Home> ddggP``
+  vnoremap <silent>]<End> dGp``
+  vnoremap <silent>]<Home> dggP``
+
+
+  "Ctrl+Shift+Up/Down to move up and down
+  nnoremap <silent><C-S-Down> :m .+1<CR>==
+  nnoremap <silent><C-S-Up> :m .-2<CR>==
+  inoremap <silent><C-S-Down> <Esc>:m .+1<CR>==gi
+  inoremap <silent><C-S-Up> <Esc>:m .-2<CR>==gi
+  vnoremap <silent><C-S-Down> :m '>+1<CR>gv=gv
+  vnoremap <silent><C-S-Up> :m '<-2<CR>gv=gv
+  " download gvimfullscreen.dll from github, copy gvimfullscreen.dll to
 
   nnoremap <Up> <nop>
   nnoremap <Down> <nop>
@@ -213,12 +210,7 @@ function! Vim#default#SetMappings() abort
   inoremap <Down> <nop>
   inoremap <Left> <nop>
   inoremap <Right> <nop>
-  noremap <leader>; ;
-  "设置取消查找高亮
-  nnoremap <Leader>nh :nohl<CR>
   nnoremap & i&ensp;&ensp;&ensp;<Esc>
-  "接口与实现之间转换
-  nmap <silent> <Leader>sw :FSHere<cr>
 
 endfunction
 

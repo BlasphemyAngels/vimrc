@@ -1,41 +1,10 @@
-set nocompatible
-source $HOME/.vim/bundle.vim
-"""侦测文件类型"""
-filetype on
-"""为特定文件类型载入相关缩进文件"""
-filetype plugin indent on    
-"""载入文件类型插件"""
-filetype plugin on
+" Note: Skip initialization for vim-tiny or vim-small.
 
-source $HOME/.vim/dein.vim
-source $HOME/.vim/mapping.vim
-source $HOME/.vim/variable.vim
-source $HOME/.vim/function.vim
-source $HOME/.vim/setting.vim
-source $HOME/.vim/neocomplete.vim
-source $HOME/.vim/syntastic.vim
-source $HOME/.vim/jedi.vim
-source $HOME/.vim/fileheader.vim
-source $HOME/.vim/number.vim
-source $HOME/.vim/startify.vim
-source $HOME/.vim/gundo.vim
-source $HOME/.vim/youdao.vim
-source $HOME/.vim/unite.vim
-source $HOME/.vim/runformat.vim
-source $HOME/.vim/nerdtree.vim
-source $HOME/.vim/tagbar.vim
-source $HOME/.vim/vimfiler.vim
-source $HOME/.vim/vimsignature.vim
-source $HOME/.vim/airline.vim
-source $HOME/.vim/debug.vim
-source $HOME/.vim/vimux.vim
-source $HOME/.vim/wildfire.vim
-source $HOME/.vim/ctrlsf.vim
-source $HOME/.vim/indentline.vim
-source $HOME/.vim/ctrlp.vim
-source $HOME/.vim/emmet.vim
-source $HOME/.vim/filetype.vim
-source $HOME/.vim/pydiction.vim
 
-let g:ackprg = 'ag --nogroup --nocolor --column'
-let g:pymode_rope=0
+if 1
+  execute 'source' fnamemodify(expand('<sfile>'), ':h').'/config/main.vim'
+endif
+
+
+
+" vim:set et sw=2

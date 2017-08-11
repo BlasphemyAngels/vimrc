@@ -7,14 +7,6 @@ let g:unite_source_menu_menus.CustomKeyMaps = {'description':
             \ 'Custom mapped keyboard shortcuts                   [unite]<SPACE>'}
 let g:unite_source_menu_menus.CustomKeyMaps.command_candidates =
             \ get(g:unite_source_menu_menus.CustomKeyMaps,'command_candidates', [])
-let g:unite_source_menu_menus.MyStarredrepos = {'description':
-            \ 'All github repos starred by me                   <leader>ls'}
-let g:unite_source_menu_menus.MyStarredrepos.command_candidates =
-            \ get(g:unite_source_menu_menus.MyStarredrepos,'command_candidates', [])
-let g:unite_source_menu_menus.MpvPlayer = {'description':
-            \ 'Musics list                   <leader>lm'}
-let g:unite_source_menu_menus.MpvPlayer.command_candidates =
-            \ get(g:unite_source_menu_menus.MpvPlayer,'command_candidates', [])
 fu! zvim#util#defineMap(type,key,value,desc,...) abort
     exec a:type . ' ' . a:key . ' ' . a:value
     let description = '➤ '

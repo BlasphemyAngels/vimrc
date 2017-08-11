@@ -1,17 +1,9 @@
 function! Vim#commands#load() abort
   ""
-  " Load exist layer, {layers} can be a string of a layer name, or a list
-  " of layer names.
-  command! -nargs=+ SPLayer call Vim#layers#load(<f-args>)
-  ""
   " Print the version of Vim.  The following lines contain information
   " about which features were enabled.  When there is a preceding '+', the
   " feature is included, when there is a '-' it is excluded.
-  command! -nargs=0 SPVersion call Vim#commands#version()
-  ""
-  " Set or check Vim option. {opt} should be the option name of
-  " vim, This command will use [value] as the value of option name.
-  command! -nargs=+ SPSet call Vim#options#set(<f-args>)
+  command! -nargs=0 SPCheck call Vim#commands#check()
   ""
   " print the debug information of vim, [!] forces the output into a
   " new buffer.
@@ -62,9 +54,9 @@ endfunction
 
 function! Vim#commands#config(...) abort
   if (a:0 > 0 && a:1 ==# '-g') || a:0 == 0
-    tabnew ~/.Vim.d/init.vim
+    tabnew ~/.vim/vimrc
   elseif  a:0 > 0 && a:1 ==# '-l'
-    tabnew .Vim.d/init.vim
+    tabnew .vim/vimrc
   endif
 endfunction
 
@@ -92,8 +84,8 @@ function! Vim#commands#install_plugin(...) abort
   endif
 endfunction
 
-function! Vim#commands#version() abort
-  echo 'Vim ' . g:vim_version . '-' . s:SHA() . "\n" .
+function! Vim#commands#check() abort
+  echo 'Vim ' . '-' . s:SHA() . "\n" .
         \ "\n" .
         \ 'Optional features included (+) or not (-):' . "\n"
         \ s:check_features([

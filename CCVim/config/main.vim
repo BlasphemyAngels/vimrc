@@ -29,17 +29,17 @@ if s:status[0]
     augroup END
 endif
 
-call zvim#util#source_rc('/autoload/basic_setting.vim')
+call zvim#util#source_rc('basic_setting.vim')
 
 try
-    call zvim#util#source_rc('/autoload/functions.vim')
+    call zvim#util#source_rc('functions.vim')
 catch
     execute 'set rtp +=' . fnamemodify(g:Config_Main_Home, ':p:h:h')
-    call zvim#util#source_rc('/autoload/functions.vim')
+    call zvim#util#source_rc('functions.vim')
 endtry
 
 
-call zvim#util#source_rc('/autoload/init.vim')
+call zvim#util#source_rc('init.vim')
 
 call Vim#default()
 
@@ -47,12 +47,12 @@ call Vim#loadCustomConfig()
 
 call Vim#end()
 
-call zvim#util#source_rc('/autoload/general.vim')
+call zvim#util#source_rc('general.vim')
 
 
 
 call Vim#autocmds#init()
 
-call zvim#util#source_rc('/autoload/commands.vim')
+call zvim#util#source_rc('commands.vim')
 filetype plugin indent on
 syntax on
